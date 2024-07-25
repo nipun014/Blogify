@@ -280,7 +280,17 @@ app.post('/blog/:id/comments', async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   });
-
+  app.post('/userblogs', async (req, res) => {
+    const { userId } = req.body;
+    
+    try {
+      const blogs = await Blog.find({ author: userId }); // Assuming `author` field is used to relate blogs to users
+      res.status(200).json(blogs);
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      res.status(500).json({ message: 'Error fetching blogs' });
+    }
+  });
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
